@@ -38,12 +38,26 @@ class AMayusculas(LectorDecorador):
         texto = super().leer()
         return texto.upper()
 
+# Decorador 3: Para limpiar espacios internos
+class NormalizarEspacios(LectorDecorador):
+    def leer(self) -> str:
+        texto = super().leer()
+        return " ".join(texto.split())
+    
+# Decorador 4: convierte a mayúsculas
+class AMinusculas(LectorDecorador):
+    def leer(self) -> str:
+        texto = super().leer()
+        return texto.lower()
+
 # Uso: composición dinámica por apilamiento
 if __name__ == "__main__":
-    base = LectorBase("  hola mundo  ")
+    base = LectorBase("        TEXTO     CON      ESPACIOS   INTERNOS     ")
     limpio = RecortarEspacios(base)           # agrega recorte
     limpio_mayus = AMayusculas(limpio)        # agrega mayúsculas encima
-    print(limpio_mayus.leer())                # -> "HOLA MUNDO"
+    limpio_mayus_espacios = NormalizarEspacios(limpio_mayus)
+    limpio_espacios_minus = AMinusculas(limpio_mayus_espacios)
+    print(limpio_espacios_minus.leer())               # -> "HOLA MUNDO"
 
 
 
